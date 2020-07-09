@@ -5,11 +5,12 @@ Home surveillance application
 import time
 
 from lib.camera import Camera
-from lib.config import TOKEN_ID, REGISTRATION_FOLDER, VIDEO_TIME
+from lib.config import TOKEN_ID, ENABLE_CAMERA, REGISTRATION_FOLDER, VIDEO_TIME
 from lib.telebot import Telebot
 from lib.pir import MotionDetector
 
-camera = Camera(REGISTRATION_FOLDER)
+if ENABLE_CAMERA:
+    camera = Camera(REGISTRATION_FOLDER)
 bot = Telebot(TOKEN_ID)
 pir = MotionDetector()
 
@@ -69,10 +70,11 @@ def on_help():
     msg = "command usage:\n"
     msg += "\t/start : start the home monitoring system \n"
     msg += "\t/stop  : stop the home monitoring system\n"
-    msg += "\t/show  : show the status of the monitoring system \n"
-    msg += "\t/photo : take a picture\n"
-    msg += "\t/video time=<delay> : records a video, argument time defines the duration of the recording\n"
-    msg += "\t/clean : remove all files in video folder\n"
+    msg += "\t/status  : show the status of the monitoring system \n"
+    if ENABLE_CAMERA:
+        msg += "\t/photo : take a picture\n"
+        msg += "\t/video time=<delay> : records a video, argument time defines the duration of the recording\n"
+        msg += "\t/clean : remove all files in video folder\n"
     msg += "\t/help  : show help\n"
     return bot.send_message(msg)
 
@@ -89,7 +91,10 @@ print('I am listening ...')
 try:
     while True:
         if bot.is_listen and pir.movement_detected():
-            bot.send_video(camera.start_recording(VIDEO_TIME), 'motion detected')
+            if ENABLE_CAMERA:
+                bot.send_video(camera.start_recording(VIDEO_TIME), 'motion detected')
+            else:
+                bot.send_message("motion detected!")
         else:
             time.sleep(1)
 except KeyboardInterrupt:
