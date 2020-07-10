@@ -95,7 +95,10 @@ try:
                 bot.send_video(camera.start_recording(VIDEO_TIME), 'motion detected')
             else:
                 bot.send_message("motion detected!")
+                #print('!!! motion detected !!!')
+                time.sleep(3)        
         else:
-            time.sleep(1)
+            #print('nothing detected')
+            time.sleep(0.5)
 except KeyboardInterrupt:
     del camera

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ENV_PATH=/home/pi/Documents/venv
-APP=appbot.py
+APP=app.py
 CMD="python ../$APP"
 NAPP=`ps -ef | grep "$CMD" | grep -v "grep" | wc -l`
 
