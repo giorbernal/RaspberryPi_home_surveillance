@@ -11,8 +11,10 @@ from lib.pir import MotionDetector
 
 if ENABLE_CAMERA:
     camera = Camera(REGISTRATION_FOLDER)
+    pir = MotionDetector(ENABLE_CAMERA, camera)
+else:
+    pir = MotionDetector(ENABLE_CAMERA, -1)
 bot = Telebot(TOKEN_ID)
-pir = MotionDetector()
 
 
 @bot.handler("/start")
@@ -47,7 +49,8 @@ def on_photo():
     """
     command /photo: take a photo
     """
-    return bot.send_photo(camera.take_photo(), "photo")
+    photo,_ = camera.take_photo()
+    return bot.send_photo(photo, "photo")
 
 
 @bot.handler("/video")

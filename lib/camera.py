@@ -68,7 +68,7 @@ class Camera:
         photo = os.path.join(self.registration_folder, 'photo-' +
                              time.strftime("%H%M%S-%Y%m%d") + '.jpeg')
         self.camera.capture(photo)
-        return photo
+        return photo, path
 
     def __del__(self):
         self.camera.close()
