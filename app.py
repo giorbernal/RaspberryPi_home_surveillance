@@ -95,11 +95,12 @@ try:
     while True:
         if bot.is_listen and pir.movement_detected():
             if ENABLE_CAMERA:
-                bot.send_video(camera.start_recording(VIDEO_TIME), 'motion detected')
+                #bot.send_video(camera.start_recording(VIDEO_TIME), 'motion detected')
+                print('!!! motion detected (Yes camera) !!!')
             else:
-                bot.send_message("motion detected!")
-                #print('!!! motion detected !!!')
-                time.sleep(3)        
+                #bot.send_message("motion detected!")
+                print('!!! motion detected (No camera) !!!')
+                time.sleep(3)
         else:
             #print('nothing detected')
             time.sleep(0.5)
