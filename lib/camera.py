@@ -32,9 +32,11 @@ class Camera:
                                   'vid-' + time.strftime("%H%M%S-%Y%m%d") + '.h264')
         video_mp4 = os.path.join(self.registration_folder,
                                  'vid-' + time.strftime("%H%M%S-%Y%m%d") + '.mp4')
+        print('start recording ...')
         self.camera.start_recording(video_h264)
         time.sleep(int(delay))
         self.camera.stop_recording()
+        print('recording stopped!')
 
         error = self.__convert_h264_to_mp4(video_h264, video_mp4)
         self.record = {
@@ -59,16 +61,20 @@ class Camera:
         else:
             return None
 
-    def take_photo(self):
+    def take_photo(self, path=''):
         """
         Take a photo.
 
         :return: photo at format .jpeg
         """
-        photo = os.path.join(self.registration_folder, 'photo-' +
-                             time.strftime("%H%M%S-%Y%m%d") + '.jpeg')
+        
+        if (path==''):
+            photo = os.path.join(self.registration_folder, 'photo-' +
+                                 time.strftime("%H%M%S-%Y%m%d") + '.jpeg')
+        else:
+            photo = path
         self.camera.capture(photo)
-        return photo, path
+        return photo
 
     def __del__(self):
         self.camera.close()

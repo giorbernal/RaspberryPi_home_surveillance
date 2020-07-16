@@ -5,13 +5,13 @@ Home surveillance application
 import time
 
 from lib.camera import Camera
-from lib.config import TOKEN_ID, ENABLE_CAMERA, REGISTRATION_FOLDER, VIDEO_TIME
+from lib.config import TOKEN_ID, ENABLE_CAMERA, SENSIBILITY, REGISTRATION_FOLDER, VIDEO_TIME
 from lib.telebot import Telebot
 from lib.pir import MotionDetector
 
 if ENABLE_CAMERA:
     camera = Camera(REGISTRATION_FOLDER)
-    pir = MotionDetector(ENABLE_CAMERA, camera)
+    pir = MotionDetector(ENABLE_CAMERA, SENSIBILITY, camera)
 else:
     pir = MotionDetector(ENABLE_CAMERA, -1)
 bot = Telebot(TOKEN_ID)
@@ -23,6 +23,7 @@ def on_start():
     command /start: start bot
     """
     bot.is_listen = True
+    pir.start()
     return bot.send_message("Bot start")
 
 
@@ -49,7 +50,7 @@ def on_photo():
     """
     command /photo: take a photo
     """
-    photo,_ = camera.take_photo()
+    photo = camera.take_photo()
     return bot.send_photo(photo, "photo")
 
 
@@ -95,14 +96,15 @@ try:
     while True:
         if bot.is_listen and pir.movement_detected():
             if ENABLE_CAMERA:
-                #bot.send_video(camera.start_recording(VIDEO_TIME), 'motion detected')
+                bot.send_message("motion detected!")
+                bot.send_video(camera.start_recording(VIDEO_TIME), 'motion detected')
                 print('!!! motion detected (Yes camera) !!!')
             else:
-                #bot.send_message("motion detected!")
+                bot.send_message("motion detected!")
                 print('!!! motion detected (No camera) !!!')
                 time.sleep(3)
         else:
             #print('nothing detected')
-            time.sleep(0.5)
+            time.sleep(0.25)
 except KeyboardInterrupt:
     del camera
