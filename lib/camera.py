@@ -16,8 +16,9 @@ class Camera:
     :param folder: allows you to define the folder where the records are stored.
     """
 
-    def __init__(self, folder):
+    def __init__(self, base, folder):
         self.camera = PiCamera()
+       	self.base_folder = base
         self.registration_folder = folder
         self.record = {}
 
@@ -28,9 +29,9 @@ class Camera:
         :param delay: recording time
         :return: dictionary containing the name of the video and the return code of the recording.
         """
-        video_h264 = os.path.join(self.registration_folder,
+        video_h264 = os.path.join(self.base_folder, self.registration_folder,
                                   'vid-' + time.strftime("%H%M%S-%Y%m%d") + '.h264')
-        video_mp4 = os.path.join(self.registration_folder,
+        video_mp4 = os.path.join(self.base_folder, self.registration_folder,
                                  'vid-' + time.strftime("%H%M%S-%Y%m%d") + '.mp4')
         print('start recording ...')
         self.camera.start_recording(video_h264)
@@ -69,10 +70,10 @@ class Camera:
         """
         
         if (path==''):
-            photo = os.path.join(self.registration_folder, 'photo-' +
+            photo = os.path.join(self.base_folder, self.registration_folder, 'photo-' +
                                  time.strftime("%H%M%S-%Y%m%d") + '.jpeg')
         else:
-            photo = path
+            photo = os.path.join(self.base_folder, path)
         self.camera.capture(photo)
         return photo
 
@@ -85,7 +86,7 @@ class Camera:
 
         :return: deletion result
         """
-        command = "cd " + self.registration_folder + " && rm *"
+        command = "cd " + self.base_folder + "/" + self.registration_folder + " && rm *"
         try:
             subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
         except subprocess.CalledProcessError as err:

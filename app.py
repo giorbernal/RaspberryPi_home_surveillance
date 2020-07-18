@@ -5,12 +5,12 @@ Home surveillance application
 import time
 
 from lib.camera import Camera
-from lib.config import TOKEN_ID, ENABLE_CAMERA, SENSIBILITY, REGISTRATION_FOLDER, VIDEO_TIME
+from lib.config import TOKEN_ID, ENABLE_CAMERA, SENSIBILITY, BASE_FOLDER, REGISTRATION_FOLDER, VIDEO_TIME
 from lib.telebot import Telebot
 from lib.pir import MotionDetector
 
 if ENABLE_CAMERA:
-    camera = Camera(REGISTRATION_FOLDER)
+    camera = Camera(BASE_FOLDER, REGISTRATION_FOLDER)
     pir = MotionDetector(ENABLE_CAMERA, SENSIBILITY, camera)
 else:
     pir = MotionDetector(ENABLE_CAMERA, -1)

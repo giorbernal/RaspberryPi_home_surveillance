@@ -11,6 +11,7 @@ class MotionDetector:  # pylint: disable=too-few-public-methods
     """
 
     def __init__(self, isCamera, sensibility, camera):
+        self.base_dir = '/home/pi/Documents/RaspberryPi_home_surveillance/'
         self.pir = MotionSensor(4)
         self.isCamera = isCamera
         self.camera = camera
@@ -19,7 +20,7 @@ class MotionDetector:  # pylint: disable=too-few-public-methods
 
     def start(self):
         if self.isCamera:
-            ref_image_path = self.camera.take_photo('tmp/ref.jpeg')
+            ref_image_path = self.camera.take_photo(self.base_dir + 'tmp/ref.jpeg')
             self.ref_image = self.__read_image__(ref_image_path)
         
     def movement_detected(self):
@@ -32,7 +33,7 @@ class MotionDetector:  # pylint: disable=too-few-public-methods
 
         if (motion_detected & self.isCamera):
             #print('sensor detection!')
-            current_image_path = self.camera.take_photo('tmp/current.jpeg')
+            current_image_path = self.camera.take_photo(self.base_dir + 'tmp/current.jpeg')
             current_image = self.__read_image__(current_image_path)
             return self.__check_motion__(current_image)
         else:
