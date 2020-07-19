@@ -18,7 +18,7 @@ class Camera:
 
     def __init__(self, base, folder):
         self.camera = PiCamera()
-       	self.base_folder = base
+        self.base_folder = base
         self.registration_folder = folder
         self.record = {}
 
