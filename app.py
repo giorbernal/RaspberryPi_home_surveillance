@@ -105,6 +105,6 @@ try:
                 time.sleep(3)
         else:
             #print('nothing detected')
-            time.sleep(0.25)
+            time.sleep(1)
 except KeyboardInterrupt:
     del camera

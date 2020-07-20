@@ -2,7 +2,7 @@
 Package for interfacing with Raspberry PI PIR motion sensor.
 """
 from gpiozero import MotionSensor
-from utils.Helper import ImageChecker
+from lib.utils.Helper import ImageChecker
 
 class MotionDetector:  # pylint: disable=too-few-public-methods
     """
@@ -20,7 +20,7 @@ class MotionDetector:  # pylint: disable=too-few-public-methods
     def start(self):
         if self.isCamera:
             ref_image_path = self.camera.take_photo(self.base_dir + 'tmp/ref.jpeg')
-            ref_image = self.ic.read_image__(ref_image_path)
+            ref_image = self.ic.read_image(ref_image_path)
             self.ic.setRefImage(ref_image)
         
     def movement_detected(self):
@@ -32,9 +32,9 @@ class MotionDetector:  # pylint: disable=too-few-public-methods
         motion_detected = bool(self.pir.motion_detected)
 
         if (motion_detected & self.isCamera):
-            #print('sensor detection!')
+            print('sensor detection!')
             current_image_path = self.camera.take_photo(self.base_dir + 'tmp/current.jpeg')
-            current_image = self.ic.read_image__(current_image_path)
+            current_image = self.ic.read_image(current_image_path)
             return self.ic.check_motion(current_image)
         else:
             return motion_detected
