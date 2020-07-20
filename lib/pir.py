@@ -35,6 +35,9 @@ class MotionDetector:  # pylint: disable=too-few-public-methods
             print('sensor detection!')
             current_image_path = self.camera.take_photo(self.base_dir + 'tmp/current.jpeg')
             current_image = self.ic.read_image(current_image_path)
-            return self.ic.check_motion(current_image)
+            motion_image_detected = self.ic.check_motion(current_image)
+            if (motion_image_detected):
+                 self.start()
+            return motion_image_detected
         else:
             return motion_detected
