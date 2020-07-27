@@ -4,6 +4,7 @@ Package for interfacing with Raspberry PI camera.
 import subprocess
 import time
 import os
+import logging
 
 from picamera import PiCamera
 
@@ -33,11 +34,11 @@ class Camera:
                                   'vid-' + time.strftime("%H%M%S-%Y%m%d") + '.h264')
         video_mp4 = os.path.join(self.base_folder, self.registration_folder,
                                  'vid-' + time.strftime("%H%M%S-%Y%m%d") + '.mp4')
-        print('start recording ...')
+        logging.debug('start recording ...')
         self.camera.start_recording(video_h264)
         time.sleep(int(delay))
         self.camera.stop_recording()
-        print('recording stopped!')
+        logging.debug('recording stopped!')
 
         error = self.__convert_h264_to_mp4(video_h264, video_mp4)
         self.record = {

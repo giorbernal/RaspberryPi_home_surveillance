@@ -3,11 +3,14 @@
 Home surveillance application
 """
 import time
+import logging
 
 from lib.camera import Camera
 from lib.config import TOKEN_ID, ENABLE_CAMERA, SENSIBILITY, BASE_FOLDER, REGISTRATION_FOLDER, VIDEO_TIME
 from lib.telebot import Telebot
 from lib.pir import MotionDetector
+
+logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s - %(levelname)s - %(name)s - %(message)s', level=logging.INFO)
 
 if ENABLE_CAMERA:
     camera = Camera(BASE_FOLDER, REGISTRATION_FOLDER)
@@ -91,20 +94,20 @@ def on_clean():
     return bot.send_message(camera.purge_records())
 
 
-print('I am listening ...')
+logging.info('I am listening ...')
 try:
     while True:
         if bot.is_listen and pir.movement_detected():
             if ENABLE_CAMERA:
                 bot.send_message("motion detected!")
                 bot.send_video(camera.start_recording(VIDEO_TIME), 'motion detected')
-                print('!!! motion detected (Yes camera) !!!')
+                logging.info('!!! motion detected (Yes camera) !!!')
             else:
                 bot.send_message("motion detected!")
-                print('!!! motion detected (No camera) !!!')
+                logging.info('!!! motion detected (No camera) !!!')
                 time.sleep(3)
         else:
-            #print('nothing detected')
+            logging.debug('nothing detected')
             time.sleep(1)
 except KeyboardInterrupt:
     del camera

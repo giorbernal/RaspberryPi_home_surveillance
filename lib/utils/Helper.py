@@ -1,3 +1,4 @@
+import logging
 import numpy as np
 from scipy import ndimage
 
@@ -34,10 +35,10 @@ class ImageChecker:
         for i in self.v_area_check:
             for j in self.h_area_check:
                 score = np.dot(self.ref_image[i,j,:], curr_image[i,j,:])/np.sum(self.ref_image[i,j,:]**2)
-                #print('  score(' + str(i) + ',' + str(j) + '): ' + str(score))
+                logging.info('  score(' + str(i) + ',' + str(j) + '): ' + str(score))
                 if ( ( score < (1-self.sensibility)) | ( (1+self.sensibility) < score) ):
                     count=count+1
-        print('split positives: ' + str(count))
+        logging.debug('split positives: ' + str(count))
         if count > 1:
             return True
         else: 
