@@ -30,10 +30,16 @@ class ImageChecker:
         self.ref_image = ref_image
 
     def check_motion(self, curr_image):
+        count = 0
         for i in self.v_area_check:
             for j in self.h_area_check:
                 score = np.dot(self.ref_image[i,j,:], curr_image[i,j,:])/np.sum(self.ref_image[i,j,:]**2)
-                print('  score(' + str(i) + ',' + str(j) + '): ' + str(score))
+                #print('  score(' + str(i) + ',' + str(j) + '): ' + str(score))
                 if ( ( score < (1-self.sensibility)) | ( (1+self.sensibility) < score) ):
-                    return True
-        return False
+                    count=count+1
+        print('split positives: ' + str(count))
+        if count > 1:
+            return True
+        else: 
+            return False
+
