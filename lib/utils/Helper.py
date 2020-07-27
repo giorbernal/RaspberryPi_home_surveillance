@@ -6,6 +6,7 @@ class ImageChecker:
 
     def __init__(self, sensibility, split_factor=5, v_area_check=[], h_area_check=[]):
         self.sensibility = sensibility
+        self.split_count_th = 3
         self.split_factor = split_factor
         self.v_area_check = v_area_check if len(v_area_check)!=0 else np.arange(split_factor).tolist()
         self.h_area_check = h_area_check if len(h_area_check)!=0 else np.arange(split_factor).tolist()
@@ -42,7 +43,7 @@ class ImageChecker:
                     count=count+1
         logging.info('score: ' + str(imageCheck))
         logging.info('split positives: ' + str(count))
-        if count > 1:
+        if count > self.split_count_th:
             return True
         else: 
             return False
