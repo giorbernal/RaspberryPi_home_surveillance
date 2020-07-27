@@ -32,13 +32,16 @@ class ImageChecker:
 
     def check_motion(self, curr_image):
         count = 0
+        imageCheck = []
         for i in self.v_area_check:
             for j in self.h_area_check:
                 score = np.dot(self.ref_image[i,j,:], curr_image[i,j,:])/np.sum(self.ref_image[i,j,:]**2)
-                logging.info('  score(' + str(i) + ',' + str(j) + '): ' + str(score))
+                #logging.debug('  score(' + str(i) + ',' + str(j) + '): ' + str(score))
+                imageCheck.append(str(score))
                 if ( ( score < (1-self.sensibility)) | ( (1+self.sensibility) < score) ):
                     count=count+1
-        logging.debug('split positives: ' + str(count))
+        logging.info('score: ' + str(imageCheck))
+        logging.info('split positives: ' + str(count))
         if count > 1:
             return True
         else: 

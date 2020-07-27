@@ -82,6 +82,8 @@ def on_help():
         msg += "\t/photo : take a picture\n"
         msg += "\t/video time=<delay> : records a video, argument time defines the duration of the recording\n"
         msg += "\t/clean : remove all files in video folder\n"
+    msg += "\t/traintrue res=all/hh:mm : informs about true positives\n"
+    msg += "\t/trainfalse res=all/hh:mm : informs about false positives\n"
     msg += "\t/help  : show help\n"
     return bot.send_message(msg)
 
@@ -93,6 +95,23 @@ def on_clean():
     """
     return bot.send_message(camera.purge_records())
 
+
+@bot.handler("/traintrue")
+def on_traintrue(*args):
+    """
+    command /traintrue res=all/hh:mm : informs about true positives
+    """
+    logging.info('traintrue: ' + args[0])
+
+
+
+
+@bot.handler("/trainfalse")
+def on_trainfalse(*args):
+    """
+    command /trainfalse res=all/hh:mm : informs about false positives
+    """
+    logging.info('trainfalse: ' + args[0])
 
 logging.info('I am listening ...')
 try:
